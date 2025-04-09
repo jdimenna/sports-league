@@ -42,12 +42,12 @@ export default {
     baseUrl() {
       return import.meta.env.MODE === 'development'
         ? 'http://localhost:5173' // or whichever port your local dev server uses
-        : 'https://your-frontend-service.onrender.com'; // your Render frontend URL
+        : 'https://sports-league-frontend.onrender.com'; // your Render frontend URL
     },
     homeUrl() {
       return import.meta.env.MODE === 'development'
         ? 'http://localhost:5173' // for local dev
-        : 'https://your-frontend-service.onrender.com'; // your Render frontend URL
+        : 'https://sports-league-frontend.onrender.com'; // your Render frontend URL
     },
   },
   methods: {
