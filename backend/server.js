@@ -17,6 +17,7 @@ const options = {
     tls: { secureProtocol: 'TLSv1_2_method' }, // Force TLS 1.2
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    ssl: true,
   };
   
   mongoose.connect(process.env.MONGO_URI, options)
