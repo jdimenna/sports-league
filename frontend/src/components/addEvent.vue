@@ -3,7 +3,7 @@
       <div class="container">
         <h2 class="title is-3">Add Event</h2>
   
-        <p v-if="submissionMessage" class="notification is-info">
+        <p v-if="submissionMessage" class="notification is-custom-blue">
           {{ submissionMessage }}
         </p>
   
@@ -173,5 +173,11 @@
     background-color: #17c7d6;
     border-color: #17c7d6;
   }
+
+  .notification.is-custom-blue {
+  background-color: #71f2fc;
+  color: black;
+  border-color: #71f2fc;
+}
   </style>
   
