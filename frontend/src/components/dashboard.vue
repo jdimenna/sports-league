@@ -111,14 +111,14 @@ onMounted(async () => {
     // secureMessage.value = response.data.message;
     // userId.value = response.data.userId;
 
-    const resEvents = await axios.get('http://localhost:3000/api/all-events');
+    const resEvents = await axios.get('https://sports-league-yepn.onrender.com/api/all-events');
     events.value = resEvents.data;
     filteredEvents.value = resEvents.data;
 
-    const resLeagues = await axios.get('http://localhost:3000/api/all-leagues');
+    const resLeagues = await axios.get('https://sports-league-yepn.onrender.com/api/all-leagues');
     leagues.value = resLeagues.data;
 
-    const resTeams = await axios.get('http://localhost:3000/api/teams');
+    const resTeams = await axios.get('https://sports-league-yepn.onrender.com/api/teams');
     filteredTeams.value = resTeams.data;
 
   } catch (err) {
