@@ -12,7 +12,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI);
+// mongoose.connect(process.env.MONGO_URI);
+const options = {
+    tls: { secureProtocol: 'TLSv1_2_method' }, // Force TLS 1.2
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  };
+  
+  mongoose.connect(process.env.MONGO_URI, options)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 app.use('/api', authRoutes);
 app.use('/api', protectedRoutes);
