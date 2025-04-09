@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar is-custom-blue" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item has-text-weight-bold is-size-5" :href="homeUrl">
+      <router-link class="navbar-item has-text-weight-bold is-size-5" to="/">
         Sports Schedules
-      </a>
+      </router-link>
 
       <a
         role="button"
@@ -22,9 +22,9 @@
 
     <div :class="{ 'navbar-menu': true, 'is-active': isActive }" id="navMenu">
       <div class="navbar-start">
-        <a class="navbar-item" :href="`${baseUrl}/`">Home</a>
-        <a class="navbar-item" :href="`${baseUrl}/dashboard`">Dashboard</a>
-        <a class="navbar-item" :href="`${baseUrl}/admin`">Edit Data</a>
+        <router-link class="navbar-item" to="/">Home</router-link>
+        <router-link class="navbar-item" to="/dashboard">Dashboard</router-link>
+        <router-link class="navbar-item" to="/admin">Edit Data</router-link>
       </div>
     </div>
   </nav>
@@ -36,19 +36,6 @@ export default {
     return {
       isActive: false,
     };
-  },
-  computed: {
-    // Set base URL for production or development
-    baseUrl() {
-      return import.meta.env.MODE === 'development'
-        ? 'http://localhost:5173' // or whichever port your local dev server uses
-        : 'https://sports-league-frontend.onrender.com'; // your Render frontend URL
-    },
-    homeUrl() {
-      return import.meta.env.MODE === 'development'
-        ? 'http://localhost:5173' // for local dev
-        : 'https://sports-league-frontend.onrender.com'; // your Render frontend URL
-    },
   },
   methods: {
     toggleNavbar() {
