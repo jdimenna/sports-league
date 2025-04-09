@@ -46,9 +46,8 @@ export default {
 </script>
 
 <style scoped>
-/* Custom Blue Navbar with #1FE8F7 */
 .navbar.is-custom-blue {
-  background-color: #1FE8F7; /* New blue color */
+  background-color: #1FE8F7; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

@@ -1,0 +1,94 @@
+<template>
+  <div class="section">
+    <div class="container">
+      <h2 class="title is-3">Add User</h2>
+
+      <p v-if="submissionMessage" class="notification is-info">
+        {{ submissionMessage }}
+      </p>
+
+      <form @submit.prevent="addNewUser">
+        <div class="field">
+          <label class="label" for="name">Username</label>
+          <div class="control">
+            <input
+              id="name"
+              class="input"
+              v-model="userData.username"
+              type="text"
+              placeholder="Username"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="name">Password</label>
+          <div class="control">
+            <input
+              id="name"
+              class="input"
+              v-model="userData.password"
+              type="text"
+              placeholder="Username"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <button class="button is-custom-blue has-text-black" type="submit">Add User</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+
+const userData = ref({
+  name: '',
+});
+
+const submissionMessage = ref('');
+
+const addNewUser = async () => {
+  try {
+    const response = await axios.post('/api/register', userData.value);
+    submissionMessage.value = 'User added successfully!';
+    userData.value = { name: '' };
+  } catch (err) {
+    submissionMessage.value = 'Failed to add user.';
+    console.error('Error adding user:', err);
+  }
+};
+</script>
+
+<style scoped>
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.button.is-custom-blue {
+  background-color: #1FE8F7;
+  color: white;
+  border-color: #1FE8F7;
+}
+
+.button.is-custom-blue:hover {
+  background-color: #17c7d6;
+  border-color: #17c7d6;
+}
+</style>

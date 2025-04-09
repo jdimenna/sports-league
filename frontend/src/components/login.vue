@@ -34,10 +34,12 @@
         <div class="field">
           <div class="control">
             <button class="button is-custom-blue has-text-black" type="submit">Login</button>
+            <button class="button is-custom-blue has-text-black" @click="navigateToDash">Continue As Guest</button>
           </div>
         </div>
       </form>
     </div>
+    
   </div>
 </template>
 
@@ -64,6 +66,10 @@
       alert('Invalid login');
     }
   };
+
+  const navigateToDash = () => {
+    router.push('/dashboard');
+  };
   </script>
 
 <style scoped>
@@ -83,5 +89,8 @@
   border-color: #17c7d6;
 }
 
+.button{
+    margin-right: 10px;
+  }
 
 </style>

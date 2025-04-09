@@ -3,14 +3,34 @@
       <div class="container">
         <h2 class="title is-3">Select Action</h2>
         
+        <div class="container">
+            <button class="button is-custom-blue has-text-black" @click="navigateToAddLeague">
+            🏅 Add New League
+            </button>
+    
+            <button class="button is-custom-blue has-text-black" @click="navigateToAddEvent">
+                🎯 Add New Event
+            </button>
 
-        <button class="button is-custom-blue has-text-black" @click="navigateToAddLeague">
-          Add New League
-        </button>
-  
-        <button class="button is-custom-blue has-text-black" @click="navigateToAddEvent">
-          Add New Event
-        </button>
+            <button class="button is-custom-blue has-text-black" @click="navigateToAddUser">
+                🤸 Add New User
+            </button>
+        </div>
+
+        <!-- <div class="container">
+            <button class="button is-custom-blue has-text-black" @click="navigateToAddLeague">
+                ❌ Remove Item
+            </button>
+     -->
+            <!-- <button class="button is-custom-blue has-text-black" @click="navigateToAddEvent">
+                🎯 Remove Event
+            </button>
+
+            <button class="button is-custom-blue has-text-black" @click="navigateToAddUser">
+                🤸 Remove User
+            </button> -->
+        <!-- </div> -->
+        
       </div>
     </div>
   </template>
@@ -45,14 +65,16 @@
     }
   });
   
-  // Navigate to Add New League page
   const navigateToAddLeague = () => {
     router.push('/add-league');
   };
   
-  // Navigate to Add New Event page
   const navigateToAddEvent = () => {
     router.push('/add-event');
+  };
+
+  const navigateToAddUser = () => {
+    router.push('/add-user');
   };
   </script>
   
@@ -70,6 +92,9 @@
 
   .button{
     margin-right: 20px;
+    margin-bottom: 20px;
+    width: 200px;
+    text-align: left;
   }
   </style>
   

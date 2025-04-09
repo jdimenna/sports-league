@@ -7,7 +7,7 @@
       <button class="button is-danger my-4" @click="logout">Logout</button>
 
       <h3 class="title is-4 mt-5">Your Events</h3>
-      <h4 class="title is-5">Filter League</h4>
+      <h4 class="title is-5">Filter League/Team</h4>
 
       <div class="select is-fullwidth mb-4">
         <select v-model="leagueFilter" @change="filterByLeague">
@@ -16,6 +16,28 @@
             {{ league.name }}
           </option>
         </select>
+      </div>
+
+      <div class="select is-fullwidth mb-4">
+        <select v-model="teamFilter" @change="filterByTeam">
+          <option value="">All Teams</option>
+          <option v-for="team in filteredTeams" :key="team" :value="team">
+            {{ team }}
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="label" for="search">Search</label>
+        <div class="control">
+          <input
+            id="search"
+            class="input"
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search in all fields"
+          />
+        </div>
       </div>
 
       <table class="table is-fullwidth is-striped is-hoverable">
@@ -37,7 +59,7 @@
             <td>{{ formatTime(event.date, event.time) }}</td>
             <td>{{ event.location }}</td>
             <td>{{ event.homeTeam }}</td>
-            <td>{{ event.awayTeam || 'N/A'}}</td>
+            <td>{{ event.awayTeam || '-'}}</td>
             <td>{{ event.league?.name || 'N/A' }}</td>
           </tr>
         </tbody>
@@ -56,9 +78,13 @@ const secureMessage = ref('');
 const userId = ref('');
 const events = ref([]);
 const leagues = ref([]);
+const teams = ref([]);
 const leagueFilter = ref('');
 const filteredEvents = ref([]);
+const teamFilter = ref('');
+const filteredTeams = ref([]);
 const sortOrder = ref({ date: null, time: null });
+const searchQuery = ref('');
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -79,11 +105,11 @@ const logout = () => {
 onMounted(async () => {
   const token = localStorage.getItem('token');
   try {
-    const response = await axios.get('/api/dashboard-data', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    secureMessage.value = response.data.message;
-    userId.value = response.data.userId;
+    // const response = await axios.get('/api/dashboard-data', {
+    //   headers: { Authorization: `Bearer ${token}` }
+    // });
+    // secureMessage.value = response.data.message;
+    // userId.value = response.data.userId;
 
     const resEvents = await axios.get('http://localhost:3000/api/all-events');
     events.value = resEvents.data;
@@ -91,6 +117,10 @@ onMounted(async () => {
 
     const resLeagues = await axios.get('http://localhost:3000/api/all-leagues');
     leagues.value = resLeagues.data;
+
+    const resTeams = await axios.get('http://localhost:3000/api/teams');
+    filteredTeams.value = resTeams.data;
+
   } catch (err) {
     console.error('Failed to fetch data:', err);
     alert('Session expired or data get failed.');
@@ -105,6 +135,16 @@ watch(leagueFilter, () => {
 const filterByLeague = () => {
   if (leagueFilter.value) {
     filteredEvents.value = events.value.filter(event => event.league?.name === leagueFilter.value);
+  } else {
+    filteredEvents.value = events.value;
+  }
+};
+
+const filterByTeam = () => {
+  if (teamFilter.value) {
+    filteredEvents.value = events.value.filter(event =>
+      event.homeTeam === teamFilter.value || event.awayTeam === teamFilter.value
+    );
   } else {
     filteredEvents.value = events.value;
   }
@@ -125,6 +165,34 @@ const sortTable = (column) => {
       return bValue - aValue;
     }
   });
+};
+
+watch([leagueFilter, teamFilter, searchQuery], () => {
+  filterByFilters();
+});
+
+const filterByFilters = () => {
+  let filtered = events.value;
+
+  if (leagueFilter.value) {
+    filtered = filtered.filter(event => event.league?.name === leagueFilter.value);
+  }
+
+  if (teamFilter.value) {
+    filtered = filtered.filter(event =>
+      event.homeTeam === teamFilter.value || event.awayTeam === teamFilter.value
+    );
+  }
+
+  if (searchQuery.value) {
+    filtered = filtered.filter(event =>
+      Object.values(event).some(value =>
+        String(value).toLowerCase().includes(searchQuery.value.toLowerCase())
+      )
+    );
+  }
+
+  filteredEvents.value = filtered;
 };
 
 </script>

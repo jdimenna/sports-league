@@ -4,13 +4,15 @@ import Dashboard from '../components/dashboard.vue';
 import Admin from '../components/admin.vue';
 import addEvent from '../components/addEvent.vue';
 import addLeague from '../components/addLeague.vue';
+import addUser from '../components/addUser.vue';
 
 const routes = [
   { path: '/', name: 'Login', component: Login },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
+  { path: '/dashboard', name: 'Dashboard', component: Dashboard},
   { path: '/admin', name: 'Admin', component: Admin, meta: { requiresAuth: true } },
   { path: '/add-Event', name: 'AddEvent', component: addEvent, meta: { requiresAuth: true } },
-  { path: '/add-League', name: 'AddLeague', component: addLeague, meta: { requiresAuth: true } }
+  { path: '/add-League', name: 'AddLeague', component: addLeague, meta: { requiresAuth: true } },
+  { path: '/add-User', name: 'AddUser', component: addUser, meta: { requiresAuth: true } }
 ];
 
 const router = createRouter({
