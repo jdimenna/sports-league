@@ -7,63 +7,78 @@
       <button class="button is-danger my-4" @click="logout">Logout</button>
 
       <h3 class="title is-4 mt-5">Your Events</h3>
-      <h4 class="title is-5">Filter League/Team</h4>
 
-      <div class="select is-fullwidth mb-4">
-        <select v-model="leagueFilter" @change="filterByLeague">
-          <option value="">All Leagues</option>
-          <option v-for="league in leagues" :key="league._id" :value="league.name">
-            {{ league.name }}
-          </option>
-        </select>
-      </div>
+      <div class="columns">
+        <div class="column is-one-third">
+          <nav class="panel">
+            <p class="panel-heading is-custom-blue">Filters</p>
 
-      <div class="select is-fullwidth mb-4">
-        <select v-model="teamFilter" @change="filterByTeam">
-          <option value="">All Teams</option>
-          <option v-for="team in filteredTeams" :key="team" :value="team">
-            {{ team }}
-          </option>
-        </select>
-      </div>
+            <div class="panel-block">
+              <p class="control has-icons-right">
+                <input class="input" type="text" v-model="searchQuery" placeholder="Search in all fields" />
+                <span class="icon is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </p>
+            </div>
 
-      <div class="field">
-        <label class="label" for="search">Search</label>
-        <div class="control">
-          <input
-            id="search"
-            class="input"
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search in all fields"
-          />
+            <div class="panel-block">
+              <div class="select is-fullwidth">
+                <select v-model="leagueFilter" @change="filterByLeague">
+                  <option value="">All Leagues</option>
+                  <option v-for="league in leagues" :key="league._id" :value="league.name">
+                    {{ league.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="panel-block">
+              <div class="select is-fullwidth">
+                <select v-model="teamFilter" @change="filterByTeam">
+                  <option value="">All Teams</option>
+                  <option v-for="team in filteredTeams" :key="team" :value="team">
+                    {{ team }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- <div class="panel-block">
+              <button class="button is-link is-outlined is-fullwidth" @click="resetFilters">
+                Reset all filters
+              </button>
+            </div> -->
+          </nav>
+        </div>
+
+        <div class="column is-two-thirds">
+          <table class="table is-fullwidth is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th>Event Name</th>
+                <th @click="sortTable('date')">Date</th>
+                <th @click="sortTable('time')">Time</th>
+                <th>Location</th>
+                <th>Home Team</th>
+                <th>Away Team</th>
+                <th>League</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="event in filteredEvents" :key="event._id">
+                <td class="has-text-weight-bold">{{ event.type }}</td>
+                <td>{{ formatDate(event.date) }}</td>
+                <td>{{ formatTime(event.date, event.time) }}</td>
+                <td>{{ event.location }}</td>
+                <td>{{ event.homeTeam }}</td>
+                <td>{{ event.awayTeam || '-'}}</td>
+                <td>{{ event.league?.name || 'N/A' }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-
-      <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
-          <tr>
-            <th>Event Name</th>
-            <th @click="sortTable('date')">Date</th>
-            <th @click="sortTable('time')">Time</th>
-            <th>Location</th>
-            <th>Home Team</th>
-            <th>Away Team</th>
-            <th>League</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="event in filteredEvents" :key="event._id">
-            <td class="has-text-weight-bold">{{ event.type }}</td>
-            <td>{{ formatDate(event.date) }}</td>
-            <td>{{ formatTime(event.date, event.time) }}</td>
-            <td>{{ event.location }}</td>
-            <td>{{ event.homeTeam }}</td>
-            <td>{{ event.awayTeam || '-'}}</td>
-            <td>{{ event.league?.name || 'N/A' }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </template>
@@ -201,6 +216,12 @@ const filterByFilters = () => {
 .navbar.is-custom-blue {
   background-color: #1FE8F7;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.panel-heading.is-custom-blue {
+  background-color: #1FE8F7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #2e333c;
 }
 
 .navbar-item:hover {

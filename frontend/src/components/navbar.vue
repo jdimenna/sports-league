@@ -27,21 +27,30 @@
         <router-link class="navbar-item" to="/admin">Edit Data</router-link>
       </div>
     </div>
+<!-- 
+    <div class="navbar-end">
+        <div class="navbar-item">
+          <span class="has-text-weight-semibold">
+            {{ user?.username || 'Guest' }}
+          </span>
+        </div>
+      </div> -->
   </nav>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
-      isActive: false,
+      isActive: false
     };
   },
   methods: {
     toggleNavbar() {
       this.isActive = !this.isActive;
     },
-  },
+  }
 };
 </script>
 
