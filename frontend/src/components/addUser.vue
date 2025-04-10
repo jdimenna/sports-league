@@ -58,7 +58,7 @@ const submissionMessage = ref('');
 
 const addNewUser = async () => {
   try {
-    const response = await axios.post('/api/register', userData.value);
+    const response = await axios.post('https://sports-league-yepn.onrender.com/api/register', userData.value);
     submissionMessage.value = 'User added successfully!';
     userData.value = { name: '' };
   } catch (err) {

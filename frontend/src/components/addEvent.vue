@@ -132,7 +132,7 @@
   
   const addNewEvent = async () => {
     try {
-      const response = await axios.post('/api/new-event', eventData.value);
+      const response = await axios.post('https://sports-league-yepn.onrender.com/api/new-event', eventData.value);
       submissionMessage.value = 'Event added successfully!';
       eventData.value = {
         type: '',

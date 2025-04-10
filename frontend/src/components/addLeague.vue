@@ -44,7 +44,7 @@
   
   const addNewLeague = async () => {
     try {
-      const response = await axios.post('/api/new-league', leagueData.value);
+      const response = await axios.post('https://sports-league-yepn.onrender.com/api/new-league', leagueData.value);
       submissionMessage.value = 'League added successfully!';
       leagueData.value = { name: '' };
     } catch (err) {
