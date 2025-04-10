@@ -56,12 +56,6 @@
               <input class="input mr-2" type="date" v-model="customStartDate" />
               <input class="input" type="date" v-model="customEndDate" @change="filterByCustomDateRange" />
             </div>
-
-            <!-- <div class="panel-block">
-              <button class="button is-link is-outlined is-fullwidth" @click="resetFilters">
-                Reset all filters
-              </button>
-            </div> -->
           </nav>
         </div>
 
@@ -79,11 +73,22 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="event in filteredEvents" :key="event._id">
+              <tr
+                v-for="event in filteredEvents"
+                :key="event._id"
+                style="cursor: pointer"
+              >
                 <td class="has-text-weight-bold">{{ event.type }}</td>
                 <td>{{ formatDate(event.date) }}</td>
                 <td>{{ formatTime(event.date, event.time) }}</td>
-                <td>{{ event.location }}</td>
+                <td>
+                  <span 
+                    class="location-field"
+                    @click="openMap(event.location)"
+                  >
+                    {{ event.location }}
+                  </span>
+                </td>
                 <td>{{ event.homeTeam }}</td>
                 <td>{{ event.awayTeam || '-'}}</td>
                 <td>{{ event.league?.name || 'N/A' }}</td>
@@ -91,13 +96,22 @@
             </tbody>
           </table>
         </div>
+
+        <div v-if="showMap" class="modal is-active">
+          <div class="modal-background" @click="closeMap"></div>
+          <div class="modal-content">
+            <div id="map" style="width: 100%; height: 400px;"></div>
+          </div>
+          <button class="modal-close is-large" aria-label="close" @click="closeMap"></button>
+        </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, nextTick } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 
@@ -115,7 +129,41 @@ const sortOrder = ref({ date: null, time: null });
 const searchQuery = ref('');
 const customStartDate = ref('');
 const customEndDate = ref('');
+const showMap = ref(false);
+const map = ref(null);
+const selectedLocation = ref('');
+const hoverLocation = ref(false); // Track hover state for location field
 
+const openMap = async (location) => {
+  selectedLocation.value = location;
+  showMap.value = true;
+
+  await nextTick(); // Wait until modal and DOM are rendered
+
+  const geocoder = new window.google.maps.Geocoder();
+
+  geocoder.geocode({ address: location }, (results, status) => {
+    if (status === 'OK') {
+      const mapOptions = {
+        center: results[0].geometry.location,
+        zoom: 15,
+      };
+
+      map.value = new window.google.maps.Map(document.getElementById('map'), mapOptions);
+
+      new window.google.maps.Marker({
+        position: results[0].geometry.location,
+        map: map.value,
+      });
+    } else {
+      alert('Geocode failed: ' + status);
+    }
+  });
+};
+
+const closeMap = () => {
+  showMap.value = false;
+};
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -134,18 +182,7 @@ const logout = () => {
 };
 
 onMounted(async () => {
-  // const token = localStorage.getItem('token');
-  // console.log('Token:', token);
-  // const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
   try {
-    // const response = await axios.get('https://sports-league-yepn.onrender.com/api/dashboard-data', {
-    //   headers: headers,
-    // });
-
-    // secureMessage.value = response.data.message;
-    // userId.value = response.data.userId;
-
     const resEvents = await axios.get('https://sports-league-yepn.onrender.com/api/all-events');
     events.value = resEvents.data;
     filteredEvents.value = resEvents.data;
@@ -270,7 +307,6 @@ const clearDateFilters = () => {
   customEndDate.value = '';
   filteredEvents.value = events.value;
 };
-
 </script>
 
 <style scoped>
@@ -304,4 +340,16 @@ const clearDateFilters = () => {
   background-color: #1ed0dd;
   color: #ffffff;
 }
+
+.location-field {
+  cursor: pointer;
+  transition: text-decoration 0.2s ease, color 0.2s ease;
+}
+
+.location-field:hover {
+  text-decoration: underline;
+  color: blue;
+}
 </style>
+
+
