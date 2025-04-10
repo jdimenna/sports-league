@@ -350,6 +350,85 @@ const clearDateFilters = () => {
   text-decoration: underline;
   color: blue;
 }
+
+/* Enhancing modal appearance */
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  max-width: 80%;
+  margin: 0 auto;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Adding smooth fade-in effect */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal background style */
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Close button styling */
+.modal-close {
+  background-color: #1b1e24;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.modal-close:hover {
+  background-color: #ff3860;
+  color: #fff;
+}
+
+/* Map container styling */
+#map {
+  border-radius: 8px;
+  height: 400px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal content */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Enhance modal background for smoother transition */
+.modal-background.is-active {
+  opacity: 1;
+}
+
+/* Overlay for better focus */
+.modal-content .modal-close {
+  z-index: 2;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 </style>
 
 
