@@ -23,7 +23,7 @@ router.get('/dashboard-data', (req, res) => {
   }
 
   res.json({
-    message: `Hello, ${userName}`,
+    message: `Welcome, ${userName}`,
     userId: userId
   });
 });
