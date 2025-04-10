@@ -11,7 +11,7 @@
       <div class="columns">
         <div class="column is-one-third">
           <nav class="panel">
-            <p class="panel-heading is-custom-blue">Filters</p>
+            <p class="panel-heading is-custom-blue">Filter and Search</p>
 
             <div class="panel-block">
               <p class="control has-icons-right">
@@ -42,6 +42,19 @@
                   </option>
                 </select>
               </div>
+            </div>
+
+            <div class="panel-block buttons are-small is-flex-wrap-wrap">
+              <button class="button is-custom-blue" @click="filterToday">Today</button>
+              <button class="button is-custom-blue" @click="filterThisWeek">This Week</button>
+              <button class="button is-custom-blue" @click="filterThisMonth">This Month</button>
+              <button class="button is-light" @click="clearDateFilters">Clear Date Filters</button>
+            </div>
+
+            <!-- Custom Date Range -->
+            <div class="panel-block">
+              <input class="input mr-2" type="date" v-model="customStartDate" />
+              <input class="input" type="date" v-model="customEndDate" @change="filterByCustomDateRange" />
             </div>
 
             <!-- <div class="panel-block">
@@ -100,6 +113,9 @@ const teamFilter = ref('');
 const filteredTeams = ref([]);
 const sortOrder = ref({ date: null, time: null });
 const searchQuery = ref('');
+const customStartDate = ref('');
+const customEndDate = ref('');
+
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -120,11 +136,11 @@ const logout = () => {
 onMounted(async () => {
   const token = localStorage.getItem('token');
   try {
-    // const response = await axios.get('/api/dashboard-data', {
-    //   headers: { Authorization: `Bearer ${token}` }
-    // });
-    // secureMessage.value = response.data.message;
-    // userId.value = response.data.userId;
+    const response = await axios.get('https://sports-league-yepn.onrender.com/dashboard-data', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    secureMessage.value = response.data.message;
+    userId.value = response.data.userId;
 
     const resEvents = await axios.get('https://sports-league-yepn.onrender.com/api/all-events');
     events.value = resEvents.data;
@@ -210,6 +226,48 @@ const filterByFilters = () => {
   filteredEvents.value = filtered;
 };
 
+const filterToday = () => {
+  const today = new Date().toISOString().split('T')[0];
+  filteredEvents.value = events.value.filter(event => event.date === today);
+};
+
+const filterThisWeek = () => {
+  const now = new Date();
+  const weekFromNow = new Date();
+  weekFromNow.setDate(now.getDate() + 7);
+  filteredEvents.value = events.value.filter(event => {
+    const eventDate = new Date(event.date);
+    return eventDate >= now && eventDate <= weekFromNow;
+  });
+};
+
+const filterThisMonth = () => {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  filteredEvents.value = events.value.filter(event => {
+    const eventDate = new Date(event.date);
+    return eventDate >= startOfMonth && eventDate <= endOfMonth;
+  });
+};
+
+const filterByCustomDateRange = () => {
+  if (!customStartDate.value || !customEndDate.value) return;
+
+  const start = new Date(customStartDate.value);
+  const end = new Date(customEndDate.value);
+  filteredEvents.value = events.value.filter(event => {
+    const eventDate = new Date(event.date);
+    return eventDate >= start && eventDate <= end;
+  });
+};
+
+const clearDateFilters = () => {
+  customStartDate.value = '';
+  customEndDate.value = '';
+  filteredEvents.value = events.value;
+};
+
 </script>
 
 <style scoped>
@@ -231,5 +289,16 @@ const filterByFilters = () => {
 
 .navbar-item {
   transition: background-color 0.3s ease;
+}
+
+.button.is-custom-blue {
+  background-color: #1FE8F7;
+  color: #2e333c;
+  border: none;
+}
+
+.button.is-custom-blue:hover {
+  background-color: #1ed0dd;
+  color: #ffffff;
 }
 </style>
