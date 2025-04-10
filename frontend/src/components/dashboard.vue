@@ -135,6 +135,7 @@ const logout = () => {
 
 onMounted(async () => {
   const token = localStorage.getItem('token');
+  console.log('Token:', token);
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
   try {
