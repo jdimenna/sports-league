@@ -107,7 +107,7 @@ router.delete('/delete-league/:id', async (req, res) => {
   }
 });
 
-app.delete('/delete-user/:id', async (req, res) => {
+router.delete('/delete-user/:id', async (req, res) => {
   const { id } = req.params;  // Get the user ID from the request parameters
   try {
     const deletedUser = await User.findByIdAndDelete(id); // MongoDB delete operation
