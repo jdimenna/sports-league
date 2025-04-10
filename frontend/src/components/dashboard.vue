@@ -135,10 +135,13 @@ const logout = () => {
 
 onMounted(async () => {
   const token = localStorage.getItem('token');
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
   try {
-    const response = await axios.get('https://sports-league-yepn.onrender.com/dashboard-data', {
-      headers: { Authorization: `Bearer ${token}` }
+    const response = await axios.get('https://sports-league-yepn.onrender.com/api/dashboard-data', {
+      headers: headers,
     });
+
     secureMessage.value = response.data.message;
     userId.value = response.data.userId;
 
@@ -151,11 +154,10 @@ onMounted(async () => {
 
     const resTeams = await axios.get('https://sports-league-yepn.onrender.com/api/teams');
     filteredTeams.value = resTeams.data;
-
   } catch (err) {
     console.error('Failed to fetch data:', err);
-    alert('Session expired or data get failed.');
-    logout();
+    alert('Session expired or data fetch failed.');
+    logout(); // Redirect to logout in case of error
   }
 });
 

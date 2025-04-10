@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/dashboard-data', (req, res) => {
   const authHeader = req.headers['authorization'];
+  console.log('Authorization Header:', authHeader);
   const token = authHeader && authHeader.split(' ')[1];
 
   let userName = 'Guest';
