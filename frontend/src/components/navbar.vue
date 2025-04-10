@@ -24,7 +24,7 @@
       <div class="navbar-start">
         <router-link class="navbar-item" to="/">Home</router-link>
         <router-link class="navbar-item" to="/dashboard">Dashboard</router-link>
-        <router-link class="navbar-item" to="/admin">Edit Data</router-link>
+        <router-link class="navbar-item" to="/admin">Manage</router-link>
       </div>
     </div>
 <!-- 

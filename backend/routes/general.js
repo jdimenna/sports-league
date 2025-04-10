@@ -81,44 +81,4 @@ router.get('/teams', async (req, res) => {
   }
 });
 
-router.delete('/delete-event/:id', async (req, res) => {
-  const { id } = req.params;  // Get the event ID from the request parameters
-  try {
-    const deletedEvent = await Event.findByIdAndDelete(id); // MongoDB delete operation
-    if (!deletedEvent) {
-      return res.status(404).json({ message: 'Event not found' });
-    }
-    res.status(200).json({ message: 'Event deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to delete event' });
-  }
-});
-
-router.delete('/delete-league/:id', async (req, res) => {
-  const { id } = req.params;  // Get the league ID from the request parameters
-  try {
-    const deletedLeague = await League.findByIdAndDelete(id); // MongoDB delete operation
-    if (!deletedLeague) {
-      return res.status(404).json({ message: 'League not found' });
-    }
-    res.status(200).json({ message: 'League deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to delete league' });
-  }
-});
-
-router.delete('/delete-user/:id', async (req, res) => {
-  const { id } = req.params;  // Get the user ID from the request parameters
-  try {
-    const deletedUser = await User.findByIdAndDelete(id); // MongoDB delete operation
-    if (!deletedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.status(200).json({ message: 'User deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to delete user' });
-  }
-});
-
-
 export default router;
