@@ -59,11 +59,13 @@ const logout = () => {
 const navigateToAddLeague = () => router.push('/add-league');
 const navigateToAddEvent = () => router.push('/add-event');
 const navigateToAddUser = () => router.push('/add-user');
+const navigateToDeleteEvent = () => router.push('/delete-event');
 
 const actions = [
   { label: 'Add New League', emoji: '🏅', handler: navigateToAddLeague },
   { label: 'Add New Event', emoji: '🎯', handler: navigateToAddEvent },
   { label: 'Add New User', emoji: '🤸', handler: navigateToAddUser },
+  { label: 'Delete Event', emoji: '❌', handler: navigateToDeleteEvent },
 ];
 </script>
 
