@@ -24,6 +24,16 @@
 
             <div class="panel-block">
               <div class="select is-fullwidth">
+                <select v-model="eventTypeFilter" @change="filterByType">
+                  <option value="">All Event Types</option>
+                  <option value="Game">Games Only</option>
+                  <option value="Practice">Practices Only</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="panel-block">
+              <div class="select is-fullwidth">
                 <select v-model="leagueFilter" @change="filterByLeague">
                   <option value="">All Leagues</option>
                   <option v-for="league in leagues" :key="league._id" :value="league.name">
@@ -44,14 +54,19 @@
               </div>
             </div>
 
-            <div class="panel-block buttons are-small is-flex-wrap-wrap">
-              <button class="button is-custom-blue" @click="filterToday">Today</button>
-              <button class="button is-custom-blue" @click="filterThisWeek">This Week</button>
-              <button class="button is-custom-blue" @click="filterThisMonth">This Month</button>
-              <button class="button is-light" @click="clearDateFilters">Clear Date Filters</button>
+            <div class="panel-block">
+              <div class="buttons are-small is-flex-wrap-wrap">
+                <button class="button is-custom-blue" @click="filterToday">Today</button>
+                <button class="button is-custom-blue" @click="filterThisWeek">This Week</button>
+                <button class="button is-custom-blue" @click="filterThisMonth">This Month</button>
+                <button class="button is-light" @click="clearDateFilters">Clear Date Filters</button>
+              </div>
             </div>
 
-            <!-- Custom Date Range -->
+            <div class="panel-block has-text-weight-bold">
+              Custom Date Range
+            </div>
+
             <div class="panel-block">
               <input class="input mr-2" type="date" v-model="customStartDate" />
               <input class="input" type="date" v-model="customEndDate" @change="filterByCustomDateRange" />
@@ -132,6 +147,7 @@ const customEndDate = ref('');
 const showMap = ref(false);
 const map = ref(null);
 const selectedLocation = ref('');
+const eventTypeFilter = ref('');
 const hoverLocation = ref(false); // Track hover state for location field
 
 const openMap = async (location) => {
@@ -306,6 +322,36 @@ const clearDateFilters = () => {
   customStartDate.value = '';
   customEndDate.value = '';
   filteredEvents.value = events.value;
+};
+
+const filterByType = () => {
+  let filtered = events.value;
+
+  if (leagueFilter.value) {
+    filtered = filtered.filter(event => event.league?.name === leagueFilter.value);
+  }
+
+  if (teamFilter.value) {
+    filtered = filtered.filter(event =>
+      event.homeTeam === teamFilter.value || event.awayTeam === teamFilter.value
+    );
+  }
+
+  if (eventTypeFilter.value === 'Game') {
+    filtered = filtered.filter(event => event.type.toLowerCase() === 'game');
+  } else if (eventTypeFilter.value === 'Practice') {
+    filtered = filtered.filter(event => event.type.toLowerCase() === 'practice');
+  }
+
+  if (searchQuery.value) {
+    filtered = filtered.filter(event =>
+      Object.values(event).some(value =>
+        String(value).toLowerCase().includes(searchQuery.value.toLowerCase())
+      )
+    );
+  }
+
+  filteredEvents.value = filtered;
 };
 </script>
 

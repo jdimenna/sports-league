@@ -132,9 +132,15 @@ const eventData = ref({
 
 const submissionMessage = ref('');
 
+
 const addNewEvent = async () => {
   try {
-    await axios.post('https://sports-league-yepn.onrender.com/api/new-event', eventData.value);
+    const adjustedEventData = {
+      ...eventData.value,
+      date: toLocalISODate(eventData.value.date),
+    };
+
+    await axios.post('https://sports-league-yepn.onrender.com/api/new-event', adjustedEventData);
     submissionMessage.value = 'Event added successfully!';
     eventData.value = {
       type: '',
@@ -149,6 +155,13 @@ const addNewEvent = async () => {
     submissionMessage.value = 'Failed to add event.';
     console.error('Error adding event:', err);
   }
+};
+
+const toLocalISODate = (dateStr) => {
+  const date = new Date(dateStr);
+  const offset = date.getTimezoneOffset();
+  date.setMinutes(date.getMinutes() + offset);
+  return date.toISOString().split('T')[0]; // only the date part
 };
 </script>
 
