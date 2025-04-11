@@ -1,47 +1,50 @@
 <template>
   <div class="hero is-halfheight is-flex is-align-items-center is-justify-content-center">
     <div class="level-item">
-      <form @submit.prevent="login" class="box">
+      <div>
+        <form @submit.prevent="login" class="box">
+          <h1 class="title is-2 has-text-centered mb-5">Log In</h1> 
 
-        <div class="field">
-          <label class="label" for="username">Username</label>
-          <div class="control">
-            <input
-              id="username"
-              class="input"
-              v-model="username"
-              type="text"
-              placeholder="Username"
-              required
-            />
+          <div class="field">
+            <label class="label" for="username">Username</label>
+            <div class="control">
+              <input
+                id="username"
+                class="input"
+                v-model="username"
+                type="text"
+                placeholder="Username"
+                required
+              />
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label class="label" for="password">Password</label>
-          <div class="control">
-            <input
-              id="password"
-              class="input"
-              v-model="password"
-              type="password"
-              placeholder="Password"
-              required
-            />
+          <div class="field">
+            <label class="label" for="password">Password</label>
+            <div class="control">
+              <input
+                id="password"
+                class="input"
+                v-model="password"
+                type="password"
+                placeholder="Password"
+                required
+              />
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <div class="control">
-            <button class="button is-custom-blue has-text-black" type="submit">Login</button>
-            <button class="button is-custom-blue has-text-black" @click="navigateToDash">Continue As Guest</button>
+          <div class="field">
+            <div class="control">
+              <button class="button is-custom-blue has-text-black" type="submit">Login</button>
+              <button class="button is-custom-blue has-text-black" @click="navigateToDash">Continue As Guest</button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-    
   </div>
 </template>
+
 
 
   
