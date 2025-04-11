@@ -1,7 +1,6 @@
 import express from 'express';
 import Event from '../models/event.js';
 import League from '../models/league.js';
-import User from '../models/user.js';
 
 const router = express.Router();
 
@@ -80,5 +79,22 @@ router.get('/teams', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch teams' });
   }
 });
+
+router.delete('/api/delete-event/:id', async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const deleted = await Event.findByIdAndDelete(id)
+
+    if (!deleted) {
+      return res.status(404).json({ message: 'Event not found' })
+    }
+
+    res.status(200).json({ message: 'Event deleted successfully' })
+  } catch (error) {
+    console.error('Delete error:', error)
+    res.status(500).json({ message: 'Server error while deleting event' })
+  }
+})
 
 export default router;
