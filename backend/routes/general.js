@@ -80,7 +80,7 @@ router.get('/teams', async (req, res) => {
   }
 });
 
-router.delete('/api/delete-event/:id', async (req, res) => {
+router.delete('/delete-event/:id', async (req, res) => {
   const { id } = req.params
 
   try {
