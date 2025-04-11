@@ -63,13 +63,14 @@
               </div>
             </div>
 
-            <div class="panel-block has-text-weight-bold">
-              Custom Date Range
-            </div>
-
             <div class="panel-block">
-              <input class="input mr-2" type="date" v-model="customStartDate" />
-              <input class="input" type="date" v-model="customEndDate" @change="filterByCustomDateRange" />
+              <div class="is-flex is-flex-direction-column">
+                <span class="has-text-weight-bold mb-2">Custom Date Range</span>
+                <div class="is-flex">
+                  <input class="input mr-2" type="date" v-model="customStartDate" />
+                  <input class="input" type="date" v-model="customEndDate" @change="filterByCustomDateRange" />
+                </div>
+              </div>
             </div>
           </nav>
         </div>
@@ -148,7 +149,6 @@ const showMap = ref(false);
 const map = ref(null);
 const selectedLocation = ref('');
 const eventTypeFilter = ref('');
-const hoverLocation = ref(false); // Track hover state for location field
 
 const openMap = async (location) => {
   selectedLocation.value = location;
